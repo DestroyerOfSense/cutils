@@ -1,6 +1,8 @@
 #ifndef MATH_CONSTANTS_H
 #define MATH_CONSTANTS_H
 
+/* Contains macro definitions for several well-known mathematical constants. */
+
 #define PI    3.141592653589793
 #define TWOPI 6.283185307179586
 #define E     2.718281828459045

@@ -2,6 +2,7 @@
 #define DYNARRAY_H
 
 #include <string.h>
+#include <stdlib.h>
 
 struct DynArray
 {
@@ -31,7 +32,7 @@ inline void dyn_reset(struct DynArray* arr)
 
 inline void* dyn_incrElemCount(struct DynArray* arr, size_t elemSize)
 {
-	dyn_setElemCount(arr, arr->elemCount + 1, elemSize);
+	return dyn_setElemCount(arr, arr->elemCount + 1, elemSize);
 }
 
 inline void dyn_append(struct DynArray* dst, const void* src, size_t srcLen, size_t elemSize)

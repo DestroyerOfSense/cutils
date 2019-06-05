@@ -24,10 +24,21 @@ struct CyclicQueue
     size_t capacity, size;
 };
 
-// not part of external interface
-size_t cycq_frontIndex(const struct CyclicQueue* queue, size_t typeSize);
-size_t cycq_backIndex(const struct CyclicQueue* queue, size_t typeSize);
+// private functions
+
+inline size_t cycq_frontIndex(const struct CyclicQueue* queue, size_t typeSize)
+{
+    return ((char*)queue->front - (char*)queue->data) / typeSize;
+}
+
+inline size_t cycq_backIndex(const struct CyclicQueue* queue, size_t typeSize)
+{
+    return ((char*)queue->back - (char*)queue->data) / typeSize;
+}
+
 void cycq_expand(struct CyclicQueue* queue, size_t typeSize);
+
+// public functions
 
 /**
  * Initializes a `CyclicQueue` with suitable default values. `queue->data` will be `NULL` if allocation fails.

@@ -5,7 +5,7 @@
 
 #define GROWTH_FACTOR 2
 
-extern inline void cycq_init(struct CyclicQueue* queue, size_t queueSize, size_t typeSize);
+extern inline void cycq_init(struct CyclicQueue* queue, size_t capacity, size_t typeSize);
 extern inline void cycq_pop(struct CyclicQueue* queue, size_t typeSize);
 
 size_t cycq_frontIndex(const struct CyclicQueue* queue, size_t typeSize)

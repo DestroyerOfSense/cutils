@@ -9,49 +9,40 @@
 /**
  * @var data
  *     this queue's internal array. Must be dynamically allocated.
+ * @var front
+ *     pointer to element in front of queue (i.e. the next to be popped) or to `NULL` if queue is empty
+ * @var back
+ *     pointer to element in back of queue (i.e. the last to be pushed) or to `NULL` if queue is empty
  * @var capacity
  *     maximum number of elements that can fit in queue before it must be expanded
  * @var size
  *     current number of elements in queue
- * @var front
- *     index of element at front of queue in `data`, assuming `data` has been cast to element type
  */
 struct CyclicQueue
 {
-    void* data;
-    size_t capacity, size, front;
+    void *data, *front, *back;
+    size_t capacity, size;
 };
 
-/*
- * To access the element at the front of the queue (assuming the queue contains elements of type `temp_t`),
- * do something like
- *
- *     temp_t x = ((temp_t*)queue.data)[queue.front];
- * or
- *
- *     temp_t* data = queue.data;
- *     temp_t x = data[queue.front];
- */
-
- // When you're done with the queue, simply free `queue.data`.
-
+// not part of external interface
+size_t cycq_frontIndex(const struct CyclicQueue* queue, size_t typeSize);
+size_t cycq_backIndex(const struct CyclicQueue* queue, size_t typeSize);
 void cycq_expand(struct CyclicQueue* queue, size_t typeSize);
 
 /**
- * Convenience function that initializes a `CyclicQueue` with suitable default values. `queue->data` will be `NULL` if
- * allocation fails.
+ * Initializes a `CyclicQueue` with suitable default values. `queue->data` will be `NULL` if allocation fails.
  *
  * @param queue
  *     pointer to queue
  * @param capacity
- *     initial queue capacity
+ *     initial queue capacity. Should always be nonzero.
  * @param typeSize
  *     `sizeof(elemType)`, where `elemType` is the type of element in the queue
  */
 inline void cycq_init(struct CyclicQueue* queue, size_t capacity, size_t typeSize)
 {
-    queue->data = malloc(capacity * typeSize);
-    queue->capacity = capacity, queue->size = 0, queue->front = 0;
+    queue->data = malloc(capacity * typeSize), queue->front = NULL, queue->back = NULL;
+    queue->capacity = capacity, queue->size = 0;
 }
 
 /**
@@ -64,27 +55,25 @@ inline void cycq_init(struct CyclicQueue* queue, size_t capacity, size_t typeSiz
  * @param typeSize
  *     `sizeof(elemType)`, where `elemType` is the type of element in the queue
  */
-inline void cycq_push(struct CyclicQueue* restrict queue, const void* restrict elem, size_t typeSize)
-{
-    if (queue->size == queue->capacity)
-        cycq_expand(queue, typeSize);
-    if (queue->data)
-    {
-        size_t i = ((queue->front + queue->size) % queue->capacity) * typeSize;
-        memcpy((char*)queue->data + i, elem, typeSize);
-        ++queue->size;
-    }
-}
+void cycq_push(struct CyclicQueue* restrict queue, const void* restrict elem, size_t typeSize);
 
 /**
- * Pops the element at the front of the queue. `queue->size` must be nonzero or undefined behavior will result.
+ * Pops the element at the front of the queue.
  *
  * @param queue
- *     pointer to queue
+ *     pointer to nonempty queue
+ * @param typeSize
+ *     `sizeof(elemType)`, where `elemType` is the type of element in the queue
  */
-inline void cycq_pop(struct CyclicQueue* queue)
+inline void cycq_pop(struct CyclicQueue* queue, size_t typeSize)
 {
-    queue->front = (queue->front + 1) % queue->capacity;
+    if (queue->size == 1)
+        queue->front = NULL, queue->back = NULL;
+    else
+    {
+        size_t newFrontIndex = (cycq_frontIndex(queue, typeSize) + 1) % queue->capacity;
+        queue->front = (char*)queue->data + newFrontIndex * typeSize;
+    }
     --queue->size;
 }
 

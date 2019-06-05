@@ -5,25 +5,56 @@
 
 #define GROWTH_FACTOR 2
 
+extern inline void cycq_init(struct CyclicQueue* queue, size_t queueSize, size_t typeSize);
+extern inline void cycq_pop(struct CyclicQueue* queue, size_t typeSize);
+
+size_t cycq_frontIndex(const struct CyclicQueue* queue, size_t typeSize)
+{
+    return ((char*)queue->front - (char*)queue->data) / typeSize;
+}
+
+size_t cycq_backIndex(const struct CyclicQueue* queue, size_t typeSize)
+{
+    return ((char*)queue->back - (char*)queue->data) / typeSize;
+}
+
 void cycq_expand(struct CyclicQueue* queue, size_t typeSize)
 {
     size_t newCapacity = queue->capacity * GROWTH_FACTOR;
     char* newData = malloc(newCapacity * typeSize);
     if (newData)
     {
-        if (queue->front + queue->size > queue->capacity)
+        size_t frontIndex = cycq_frontIndex(queue, typeSize), backIndex = cycq_backIndex(queue, typeSize);
+        if (backIndex < frontIndex)
         {
-            int beforeWrap = queue->capacity - queue->front;
-            memcpy(newData, queue->data + typeSize * queue->front, typeSize * beforeWrap);
+            size_t beforeWrap = queue->capacity - frontIndex;
+            memcpy(newData, queue->front, typeSize * beforeWrap);
             memcpy(newData + typeSize * beforeWrap, queue->data, (queue->size - beforeWrap) * typeSize);
         }
         else
-            memcpy(newData, queue->data + typeSize * queue->front, typeSize * queue->size);
+            memcpy(newData, queue->front, typeSize * queue->size);
         free(queue->data);
     }
-    queue->data = newData, queue->capacity = newCapacity, queue->front = 0;
+    queue->data = newData, queue->front = newData;
+    queue->back = newData + (queue->size - 1) * typeSize;
+    queue->capacity = newCapacity;
 }
 
-extern inline void cycq_init(struct CyclicQueue* queue, size_t queueSize, size_t typeSize);
-extern inline void cycq_push(struct CyclicQueue* restrict queue, const void* restrict elem, size_t typeSize);
-extern inline void cycq_pop(struct CyclicQueue* queue);
+void cycq_push(struct CyclicQueue* restrict queue, const void* restrict elem, size_t typeSize)
+{
+    if (queue->size == queue->capacity)
+        cycq_expand(queue, typeSize);
+    if (queue->data)
+    {
+        size_t newBackIndex;
+        if (!queue->size)
+            queue->front = queue->data, queue->back = queue->data;
+        else
+        {
+            size_t newBackIndex = (cycq_backIndex(queue, typeSize) + 1) % queue->capacity;
+            queue->back = (char*)queue->data + newBackIndex * typeSize;
+        }
+        memcpy(queue->back, elem, typeSize);
+        ++queue->size;
+    }
+}

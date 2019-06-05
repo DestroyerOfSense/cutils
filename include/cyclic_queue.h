@@ -8,11 +8,13 @@
 
 /**
  * @var data
- *     internal array
+ *     this queue's internal array. Must be dynamically allocated.
  * @var capacity
  *     maximum number of elements that can fit in queue before it must be expanded
  * @var size
  *     current number of elements in queue
+ * @var front
+ *     index of element at front of queue in `data`, assuming `data` has been cast to element type
  */
 struct CyclicQueue
 {

@@ -6,6 +6,14 @@
 #include <string.h>
 #include <stdlib.h>
 
+/**
+ * @var data
+ *     internal array
+ * @var capacity
+ *     maximum number of elements that can fit in queue before it must be expanded
+ * @var size
+ *     current number of elements in queue
+ */
 struct CyclicQueue
 {
     void* data;
@@ -14,29 +22,29 @@ struct CyclicQueue
 
 /*
  * To access the element at the front of the queue (assuming the queue contains elements of type `temp_t`),
- * do something like:
+ * do something like
  *
- * temp_t x = ((temp_t*)queue.data)[queue.front];
+ *     temp_t x = ((temp_t*)queue.data)[queue.front];
+ * or
+ *
+ *     temp_t* data = queue.data;
+ *     temp_t x = data[queue.front];
  */
 
  // When you're done with the queue, simply free `queue.data`.
 
-/*
- * @params
- * queue: pointer to queue
- * typeSize: `sizeof(elemType)`, where `elemType` is the type of element in the queue
- *
- * `queue->data` will be `NULL` if queue expansion fails.
- */
 void cycq_expand(struct CyclicQueue* queue, size_t typeSize);
 
-/*
- * @params
- * queue: pointer to queue
- * capacity: initial queue capacity
- * typeSize: `sizeof(elemType)`, where `elemType` is the type of element in the queue
+/**
+ * Convenience function that initializes a `CyclicQueue` with suitable default values. `queue->data` will be `NULL` if
+ * allocation fails.
  *
- * `queue->data` will be `NULL` if allocation fails.
+ * @param queue
+ *     pointer to queue
+ * @param capacity
+ *     initial queue capacity
+ * @param typeSize
+ *     `sizeof(elemType)`, where `elemType` is the type of element in the queue
  */
 inline void cycq_init(struct CyclicQueue* queue, size_t capacity, size_t typeSize)
 {
@@ -44,13 +52,15 @@ inline void cycq_init(struct CyclicQueue* queue, size_t capacity, size_t typeSiz
     queue->capacity = capacity, queue->size = 0, queue->front = 0;
 }
 
-/*
- * @params
- * queue: pointer to queue
- * elem: pointer to object to be pushed into the queue
- * typeSize: `sizeof(elemType)`, where `elemType` is the type of element in the queue
+/**
+ * Pushes an element to the back of the queue. `queue->data` will be `NULL` if queue expansion fails.
  *
- * `queue->data` will be `NULL` if queue expansion fails.
+ * @param
+ *     queue: pointer to queue
+ * @param elem
+ *     pointer to object to be pushed into the queue
+ * @param typeSize
+ *     `sizeof(elemType)`, where `elemType` is the type of element in the queue
  */
 inline void cycq_push(struct CyclicQueue* restrict queue, const void* restrict elem, size_t typeSize)
 {
@@ -64,11 +74,11 @@ inline void cycq_push(struct CyclicQueue* restrict queue, const void* restrict e
     }
 }
 
-/*
- * @params
- * queue: pointer to queue
+/**
+ * Pops the element at the front of the queue. `queue->size` must be nonzero or undefined behavior will result.
  *
- * `queue->size` must be nonzero or undefined behavior will result.
+ * @param queue
+ *     pointer to queue
  */
 inline void cycq_pop(struct CyclicQueue* queue)
 {

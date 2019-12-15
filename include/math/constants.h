@@ -3,12 +3,12 @@
 
 /* Contains macro definitions for several well-known mathematical constants. */
 
-#define PI    3.14159265358979
-#define TWOPI 6.28318530717959
-#define E     2.71828182845905
-#define PHI   1.61803398874990	// golden ratio
-#define SQRT2 1.41421356237310
-#define LOG2  0.69314718055995	// natural logarithm of two
-#define LOG10 2.30258509299405	// natural logarithm of ten
+#define PI    3.141592653589793
+#define TWOPI 6.283185307179586
+#define E     2.718281828459045
+#define PHI   1.618033988749895	    // golden ratio
+#define SQRT2 1.414213562373095
+#define LOG2  0.6931471805599453    // natural logarithm of two
+#define LOG10 2.302585092994046     // natural logarithm of ten
 
 #endif

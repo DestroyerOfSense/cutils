@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "cyclic_queue.h"
+#include "data_structures/cyclic_queue.h"
 
 #define GROWTH_FACTOR 2
 

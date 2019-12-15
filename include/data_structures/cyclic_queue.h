@@ -1,7 +1,7 @@
 /* A dynamically-sized queue, implemented as a ring buffer. */
 
-#ifndef CYCLIC_QUEUE_H
-#define CYCLIC_QUEUE_H
+#ifndef CUTILS_DATA_STRUCTURES_CYCLIC_QUEUE_H_12142019
+#define CUTILS_DATA_STRUCTURES_CYCLIC_QUEUE_H_12142019
 
 #include <string.h>
 #include <stdlib.h>

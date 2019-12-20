@@ -4,8 +4,8 @@
 #include <stdbool.h>
 #include <fenv.h>
 
-#include "data_structures/dynarray.h"
-#include "math/constants.h"
+#include "cutils/data_structures/dyn_array.h"
+#include "cutils/math/constants.h"
 
 #define GROWTH_FACTOR PHI
 #define DEFAULT_INITIAL_CAPACITY 8
@@ -46,7 +46,7 @@ void dyn_reset(struct DynArray* dynArr, size_t elemSize)
 
 bool dyn_shrinkToFit(struct DynArray* dynArr, size_t elemSize)
 {
-    return reallocData(dynArr, dynArr->size, elemSize);
+    return !dynArr->size || reallocData(dynArr, dynArr->size, elemSize);
 }
 
 bool dyn_append(struct DynArray* restrict dynArr, const void* restrict elem, size_t elemSize)
@@ -63,7 +63,7 @@ bool dyn_append(struct DynArray* restrict dynArr, const void* restrict elem, siz
 
 bool dyn_insert(struct DynArray* dynArr, const void* src, size_t pos, size_t srcLen, size_t elemSize)
 {
-    while (dynArr->capacity < dynArr->len + srcLen)
+    while (dynArr->capacity < dynArr->size + srcLen)
     {
         if (!expand(dynArr, elemSize))
             return false;
@@ -84,6 +84,6 @@ bool dyn_extend(struct DynArray* dynArr, const void* src, size_t srcLen, size_t 
 void dyn_remove(struct DynArray* dynArr, size_t from, size_t to, size_t elemSize)
 {
     size_t scaledFrom = from * elemSize, scaledTo = to * elemSize;
-    memmove((char*)dynArr->data + scaledFrom, (char*)dynArr->data + scaledTo, scaledTo - scaledFrom);
+    memmove((char*)dynArr->data + scaledFrom, (char*)dynArr->data + scaledTo, dynArr->size * elemSize - scaledTo);
     dynArr->size -= (to - from);
 }

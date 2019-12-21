@@ -20,12 +20,12 @@ static bool reallocData(struct DynArray* dynArr, size_t newCapacity, size_t elem
 
 static bool expand(struct DynArray* dynArr, size_t elemSize)
 {
-    // TODO: Handle possible failure of `feholdexcept` and `fesetenv`.
+    // TODO: Handle possible failure of "fe-" functions.
     fenv_t fenv;
     bool fenvSaved = !feholdexcept(&fenv);
     bool succeeded = reallocData(dynArr, GROWTH_FACTOR * dynArr->capacity + 0.5, elemSize);
     if (fenvSaved)
-        fesetenv(&fenv);
+        feclearexcept(FE_INEXACT), feupdateenv(&fenv);
     return succeeded;
 }
 
@@ -41,7 +41,7 @@ struct DynArray* dyn_init(struct DynArray* dynArr, size_t elemSize)
 void dyn_reset(struct DynArray* dynArr, size_t elemSize)
 {
     free(dynArr->data);
-    dynArr->size = 0, dynArr->capacity = 0;
+    memset(dynArr, 0, sizeof(struct DynArray));
 }
 
 bool dyn_shrinkToFit(struct DynArray* dynArr, size_t elemSize)

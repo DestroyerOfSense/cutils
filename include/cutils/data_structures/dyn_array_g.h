@@ -12,7 +12,6 @@
 #define DYN_GROWTH_FACTOR MATH_PHI
 #define DYN_DEFAULT_INITIAL_CAPACITY 8
 
-// TODO: Handle pointers to const.
 #define DYN_ARRAY_G(type, ...)                                                                                    \
                                                                                                                   \
 struct DynArray##__VA_ARGS__                                                                                      \

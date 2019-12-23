@@ -45,7 +45,9 @@ struct DynArray##__VA_ARGS__* dyn_init##__VA_ARGS__(struct DynArray##__VA_ARGS__
     if (dynArr)                                                                                                   \
     {                                                                                                             \
         dynArr->data = malloc(DYN_DEFAULT_INITIAL_CAPACITY * sizeof(type));                                       \
-        dynArr->size = 0, dynArr->capacity = DYN_DEFAULT_INITIAL_CAPACITY;                                        \
+        if (dynArr->data)                                                                                         \
+            dynArr->capacity = DYN_DEFAULT_INITIAL_CAPACITY;                                                      \
+        dynArr->size = 0;                                                                                         \
     }                                                                                                             \
     return dynArr;                                                                                                \
 }                                                                                                                 \

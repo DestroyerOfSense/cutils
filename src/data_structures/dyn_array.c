@@ -36,7 +36,9 @@ struct DynArray* dyn_init(struct DynArray* dynArr, size_t elemSize)
     if (dynArr)
     {
         dynArr->data = malloc(DEFAULT_INITIAL_CAPACITY * elemSize);
-        dynArr->size = 0, dynArr->capacity = DEFAULT_INITIAL_CAPACITY;
+        if (dynArr->data)
+            dynArr->capacity = DEFAULT_INITIAL_CAPACITY;
+        dynArr->size = 0;
     }
     return dynArr;
 }

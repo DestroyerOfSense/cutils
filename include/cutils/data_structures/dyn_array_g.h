@@ -5,12 +5,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include <fenv.h>
 
 #include "cutils/math/constants.h"
 
 #define DYN_GROWTH_FACTOR MATH_PHI
 #define DYN_DEFAULT_INITIAL_CAPACITY 8
+
+#define DYN_EXPAND(dynArr, suffix) (dyn_reallocData##suffix((dynArr), DYN_GROWTH_FACTOR * (dynArr)->capacity + 0.5))
 
 #define DYN_ARRAY_G(type, ...)                                                                                    \
                                                                                                                   \
@@ -26,16 +27,6 @@ static bool dyn_reallocData##__VA_ARGS__(struct DynArray##__VA_ARGS__* dynArr, s
     if (newData)                                                                                                  \
         dynArr->data = newData, dynArr->capacity = newCapacity;                                                   \
     return newData;                                                                                               \
-}                                                                                                                 \
-                                                                                                                  \
-static bool dyn_expand##__VA_ARGS__(struct DynArray##__VA_ARGS__* dynArr)                                         \
-{                                                                                                                 \
-    fenv_t fenv;                                                                                                  \
-    bool fenvSaved = !feholdexcept(&fenv);                                                                        \
-    bool succeeded = dyn_reallocData##__VA_ARGS__(dynArr, DYN_GROWTH_FACTOR * dynArr->capacity + 0.5);            \
-    if (fenvSaved)                                                                                                \
-        feclearexcept(FE_INEXACT), feupdateenv(&fenv);                                                            \
-    return succeeded;                                                                                             \
 }                                                                                                                 \
                                                                                                                   \
 struct DynArray##__VA_ARGS__* dyn_init##__VA_ARGS__(struct DynArray##__VA_ARGS__* dynArr)                         \
@@ -65,7 +56,7 @@ bool dyn_shrinkToFit##__VA_ARGS__(struct DynArray##__VA_ARGS__* dynArr)         
                                                                                                                   \
 bool dyn_append##__VA_ARGS__(struct DynArray##__VA_ARGS__* dynArr, type elem)                                     \
 {                                                                                                                 \
-    if (dynArr->size < dynArr->capacity || dyn_expand##__VA_ARGS__(dynArr))                                       \
+    if (dynArr->size < dynArr->capacity || DYN_EXPAND(dynArr, __VA_ARGS__))                                       \
     {                                                                                                             \
         dynArr->data[dynArr->size++] = elem;                                                                      \
         return true;                                                                                              \
@@ -78,7 +69,7 @@ bool dyn_insert##__VA_ARGS__(struct DynArray##__VA_ARGS__* dynArr, type const* s
 {                                                                                                                 \
     while (dynArr->capacity < dynArr->size + srcLen)                                                              \
     {                                                                                                             \
-        if (!dyn_expand##__VA_ARGS__(dynArr))                                                                     \
+        if (!DYN_EXPAND(dynArr, __VA_ARGS__))                                                                     \
             return false;                                                                                         \
     }                                                                                                             \
     memmove(dynArr->data + pos + srcLen, dynArr->data + pos, (dynArr->size - pos) * sizeof(type));                \

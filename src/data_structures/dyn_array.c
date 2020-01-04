@@ -2,11 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <math.h>
 
 #include "cutils/data_structures/dyn_array.h"
 #include "cutils/math/constants.h"
 
-#define GROWTH_FACTOR MATH_PHI
+#define GROWTH_FACTOR (float)MATH_PHI
 #define DEFAULT_INITIAL_CAPACITY 8
 
 static bool reallocData(struct DynArray* dynArr, size_t newCapacity, size_t elemSize)
@@ -17,8 +18,11 @@ static bool reallocData(struct DynArray* dynArr, size_t newCapacity, size_t elem
     return newData;
 }
 
-// TODO: Document possible raising of `FE_INEXACT`, and possibly provide convenient solution.
-#define EXPAND(dynArr, elemSize) (reallocData((dynArr), GROWTH_FACTOR * (dynArr)->capacity + 0.5, (elemSize)))
+// TODO: Document possible raising of `FE_INEXACT`.
+static bool expand(struct DynArray* dynArr, size_t elemSize)
+{
+    return reallocData(dynArr, nearbyint((double)GROWTH_FACTOR * dynArr->capacity), elemSize);
+}
 
 struct DynArray* dyn_init(struct DynArray* dynArr, size_t elemSize)
 {
@@ -47,7 +51,7 @@ bool dyn_shrinkToFit(struct DynArray* dynArr, size_t elemSize)
 
 bool dyn_append(struct DynArray* restrict dynArr, const void* restrict elem, size_t elemSize)
 {
-    if (dynArr->size < dynArr->capacity || EXPAND(dynArr, elemSize))
+    if (dynArr->size < dynArr->capacity || expand(dynArr, elemSize))
     {
         memcpy((char*)dynArr->data + elemSize * dynArr->size, elem, elemSize);
         ++dynArr->size;
@@ -61,7 +65,7 @@ bool dyn_insert(struct DynArray* dynArr, const void* src, size_t pos, size_t src
 {
     while (dynArr->capacity < dynArr->size + srcLen)
     {
-        if (!EXPAND(dynArr, elemSize))
+        if (!expand(dynArr, elemSize))
             return false;
     }
     char* data = dynArr->data;

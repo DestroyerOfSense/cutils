@@ -1,14 +1,16 @@
 #ifndef CUTILS_MATH_CONSTANTS_H_12142019
 #define CUTILS_MATH_CONSTANTS_H_12142019
 
-/* Contains macro definitions for several well-known mathematical constants. */
+/** @file cutils/math/constants.h
+ * Contains mathematical constants, all of which are IEEE-compliant `double` literals with maximum precision.
+ */
 
-#define MATH_PI    3.141592653589793
-#define MATH_TWOPI 6.283185307179586
-#define MATH_E     2.718281828459045
-#define MATH_PHI   1.618033988749895     // golden ratio
-#define MATH_SQRT2 1.414213562373095
-#define MATH_LOG2  0.6931471805599453    // natural logarithm of two
-#define MATH_LOG10 2.302585092994046     // natural logarithm of ten
+#define MATH_PI    0x1.921fb54442d18p+1    ///< pi
+#define MATH_TWOPI 0x1.921fb54442d18p+2    ///< 2 * pi
+#define MATH_E     0x1.5bf0a8b145769p+1    ///< e
+#define MATH_PHI   0x1.9e3779b97f4a8p+0    ///< the golden ratio
+#define MATH_SQRT2 0x1.6a09e667f3bcdp+0    ///< sqrt(2)
+#define MATH_LOG2  0x1.62e42fefa39efp-1    ///< natural logarithm of 2
+#define MATH_LOG10 0x1.26bb1bbb55516p+1    ///< natural logarithm of 10
 
 #endif

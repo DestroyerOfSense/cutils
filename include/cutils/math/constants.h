@@ -1,8 +1,8 @@
 #ifndef CUTILS_MATH_CONSTANTS_H_12142019
 #define CUTILS_MATH_CONSTANTS_H_12142019
 
-/** @file cutils/math/constants.h
- * Contains mathematical constants, all of which are IEEE-compliant `double` literals with maximum precision.
+/** @file
+ * @brief Contains mathematical constants, all of which are IEEE-compliant `double` literals with maximum precision.
  */
 
 #define MATH_PI    0x1.921fb54442d18p+1    ///< pi

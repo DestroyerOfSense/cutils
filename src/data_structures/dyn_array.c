@@ -18,7 +18,6 @@ static bool reallocData(struct DynArray* dynArr, size_t newCapacity, size_t elem
     return newData;
 }
 
-// TODO: Document possible raising of `FE_INEXACT`.
 static bool expand(struct DynArray* dynArr, size_t elemSize)
 {
     return reallocData(dynArr, nearbyint((double)GROWTH_FACTOR * dynArr->capacity), elemSize);

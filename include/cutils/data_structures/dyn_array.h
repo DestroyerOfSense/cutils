@@ -18,9 +18,9 @@
  * has good reason to. For example, this file does not contain a `pop` function, but the same effect can be achieved by
  * simply decrementing [size].
  *
- * `FE_INEXACT` may be raised during a call to `dyn_append`, `dyn_insert`, or `dyn_extend` when the resulting [capacity]
- * would be extremely large, or on systems where the difference in precision between `float` and `double` is abnormally
- * small.
+ * `FE_INEXACT` may be raised during a call to `dyn_append()`, `dyn_insert()`, or `dyn_extend()` when the resulting
+ * [capacity] would be extremely large, or on systems where the difference in precision between `float` and `double` is
+ * abnormally small.
  *
  * [data]: @ref DynArray::data
  * [size]: @ref DynArray::size

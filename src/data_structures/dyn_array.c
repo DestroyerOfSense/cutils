@@ -7,7 +7,7 @@
 #include "cutils/data_structures/dyn_array.h"
 #include "cutils/math/constants.h"
 
-#define GROWTH_FACTOR (float)MATH_PHI
+#define GROWTH_FACTOR ((float)MATH_PHI)
 #define DEFAULT_INITIAL_CAPACITY 8
 
 static bool reallocData(struct DynArray* dynArr, size_t newCapacity, size_t elemSize)

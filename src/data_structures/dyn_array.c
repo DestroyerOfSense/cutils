@@ -7,10 +7,10 @@
 #include "cutils/data_structures/dyn_array.h"
 #include "cutils/math/constants.h"
 
-#define GROWTH_FACTOR ((float)MATH_PHI)
+#define GROWTH_FACTOR ((float)CTLS_PHI)
 #define DEFAULT_INITIAL_CAPACITY 8
 
-static bool reallocData(struct DynArray* dynArr, size_t newCapacity, size_t elemSize)
+static bool reallocData(struct ctls_DynArray* dynArr, size_t newCapacity, size_t elemSize)
 {
     void* newData = realloc(dynArr->data, newCapacity * elemSize);
     if (newData)
@@ -18,15 +18,15 @@ static bool reallocData(struct DynArray* dynArr, size_t newCapacity, size_t elem
     return newData;
 }
 
-static bool expand(struct DynArray* dynArr, size_t elemSize)
+static bool expand(struct ctls_DynArray* dynArr, size_t elemSize)
 {
     return reallocData(dynArr, nearbyint((double)GROWTH_FACTOR * dynArr->capacity), elemSize);
 }
 
-struct DynArray* dyn_init(struct DynArray* dynArr, size_t elemSize)
+struct ctls_DynArray* ctls_dyn_init(struct ctls_DynArray* dynArr, size_t elemSize)
 {
     if (!dynArr)
-        dynArr = malloc(sizeof(struct DynArray));
+        dynArr = malloc(sizeof(struct ctls_DynArray));
     if (dynArr)
     {
         dynArr->data = malloc(DEFAULT_INITIAL_CAPACITY * elemSize);
@@ -37,18 +37,18 @@ struct DynArray* dyn_init(struct DynArray* dynArr, size_t elemSize)
     return dynArr;
 }
 
-void dyn_reset(struct DynArray* dynArr, size_t elemSize)
+void ctls_dyn_reset(struct ctls_DynArray* dynArr, size_t elemSize)
 {
     free(dynArr->data);
-    memset(dynArr, 0, sizeof(struct DynArray));
+    memset(dynArr, 0, sizeof(struct ctls_DynArray));
 }
 
-bool dyn_shrinkToFit(struct DynArray* dynArr, size_t elemSize)
+bool ctls_dyn_shrinkToFit(struct ctls_DynArray* dynArr, size_t elemSize)
 {
     return !dynArr->size || reallocData(dynArr, dynArr->size, elemSize);
 }
 
-bool dyn_append(struct DynArray* restrict dynArr, const void* restrict elem, size_t elemSize)
+bool ctls_dyn_append(struct ctls_DynArray* restrict dynArr, const void* restrict elem, size_t elemSize)
 {
     if (dynArr->size < dynArr->capacity || expand(dynArr, elemSize))
     {
@@ -60,7 +60,7 @@ bool dyn_append(struct DynArray* restrict dynArr, const void* restrict elem, siz
         return false;
 }
 
-bool dyn_insert(struct DynArray* dynArr, const void* src, size_t pos, size_t srcLen, size_t elemSize)
+bool ctls_dyn_insert(struct ctls_DynArray* dynArr, const void* src, size_t pos, size_t srcLen, size_t elemSize)
 {
     while (dynArr->capacity < dynArr->size + srcLen)
     {
@@ -75,12 +75,12 @@ bool dyn_insert(struct DynArray* dynArr, const void* src, size_t pos, size_t src
     return true;
 }
 
-bool dyn_extend(struct DynArray* dynArr, const void* src, size_t srcLen, size_t elemSize)
+bool ctls_dyn_extend(struct ctls_DynArray* dynArr, const void* src, size_t srcLen, size_t elemSize)
 {
-    return dyn_insert(dynArr, src, dynArr->size, srcLen, elemSize);
+    return ctls_dyn_insert(dynArr, src, dynArr->size, srcLen, elemSize);
 }
 
-void dyn_remove(struct DynArray* dynArr, size_t from, size_t to, size_t elemSize)
+void ctls_dyn_remove(struct ctls_DynArray* dynArr, size_t from, size_t to, size_t elemSize)
 {
     size_t scaledFrom = from * elemSize, scaledTo = to * elemSize;
     memmove((char*)dynArr->data + scaledFrom, (char*)dynArr->data + scaledTo, dynArr->size * elemSize - scaledTo);

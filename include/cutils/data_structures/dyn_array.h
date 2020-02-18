@@ -27,8 +27,10 @@
  * and `double` is abnormally small.
  */
 
+/// @cond
 #include <stddef.h>
 #include <stdbool.h>
+/// @endcond
 
 /** @brief A dynamic array. */
 struct ctls_DynArray
@@ -129,6 +131,7 @@ bool ctls_dyn_extend(struct ctls_DynArray* dynArr, const void* src, size_t srcLe
  * @param from first index whose corresponding element is removed. Must be between 0 and `dynArr->size - 1`, inclusive.
  * @param to index after the last whose corresponding element is removed. Must be between `0` and `dynArr->size`,
  *     inclusive, and must not be less than `from`.
+ * @param elemSize size of one of `dynArr`'s elements
  *
  * The resulting dynamic array is of the form
  *     \f[ [a_0, a_1, ..., a_{from - 1}, a_{to}, a_{to + 1}, a_{size}] \f]

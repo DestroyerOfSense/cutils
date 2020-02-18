@@ -7,6 +7,9 @@
 #include "cutils/data_structures/dyn_array.h"
 #include "cutils/math/constants.h"
 
+// By one measure, the golden ratio is the optimal growth factor. It allows reuse of a memory block after only two
+// reallocations, the theoretical minimum. Of course, whether memory blocks are reused in this way depends on the amount
+// of contiguous memory available, and how memory allocation is implemented.
 #define GROWTH_FACTOR ((float)CTLS_PHI)
 #define DEFAULT_INITIAL_CAPACITY 8
 
@@ -20,6 +23,7 @@ static bool reallocData(struct ctls_DynArray* dynArr, size_t newCapacity, size_t
 
 static bool expand(struct ctls_DynArray* dynArr, size_t elemSize)
 {
+    // This line is responsible for the possible raising of `FE_INEXACT` mentioned in the header.
     return reallocData(dynArr, nearbyint((double)GROWTH_FACTOR * dynArr->capacity), elemSize);
 }
 

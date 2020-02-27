@@ -94,7 +94,8 @@ bool ctls_dyn_shrinkToFit(struct ctls_DynArray* dynArr, size_t elemSize);
  * @return `true` if operation succeeds, `false` if not
  *
  * Intended as a substitute for adding an r-value of `dynArr`'s "type" to the end, as this is impossible with void
- * pointers. Note that `dynArr` and `elem` are `restrict`, and therefore `elem` cannot already be contained in `dynArr`.
+ * pointers. Note that `dynArr` and `elem` are `restrict`, and therefore the object `elem` points to cannot already be
+ * contained in `dynArr`.
  */
 bool ctls_dyn_append(struct ctls_DynArray* restrict dynArr, const void* restrict elem, size_t elemSize);
 

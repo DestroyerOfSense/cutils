@@ -52,5 +52,5 @@ Mkfile.old
 dkms.conf
 
 # Other
-Doxyfile
+doc
 test

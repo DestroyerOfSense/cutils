@@ -109,7 +109,7 @@ bool ctls_dyn_append(struct ctls_DynArray* restrict dynArr, const void* restrict
  * @return `true` if operation succeeds, `false` if not
  *
  * If the operation succeeds, the resulting dynamic array is of the form
- *     \f[ [a_0, a_1, ..., a_{pos - 1}, src_0, src_1, ..., src_{srcLen}, a_{pos}, a_{pos + 1}, ..., a_{size}] \f]
+ *     \f[[a_0, a_1, ..., a_{pos - 1}, src_0, src_1, ..., src_{srcLen - 1}, a_{pos}, a_{pos + 1}, ..., a_{size - 1}]\f]
  * , where \f$a\f$ is the previous dynamic array and \f$size\f$ is the size of the previous dynamic array.
  */
 bool ctls_dyn_insert(struct ctls_DynArray* dynArr, const void* src, size_t pos, size_t srcLen, size_t elemSize);
@@ -135,7 +135,7 @@ bool ctls_dyn_extend(struct ctls_DynArray* dynArr, const void* src, size_t srcLe
  * @param elemSize size of one of `dynArr`'s elements
  *
  * The resulting dynamic array is of the form
- *     \f[ [a_0, a_1, ..., a_{from - 1}, a_{to}, a_{to + 1}, a_{size}] \f]
+ *     \f[[a_0, a_1, ..., a_{from - 1}, a_{to}, a_{to + 1},..., a_{size - 1}]\f]
  * , where \f$a\f$ is the previous dynamic array and \f$size\f$ is the size of the previous dynamic array.
  */
 void ctls_dyn_remove(struct ctls_DynArray* dynArr, size_t from, size_t to, size_t elemSize);

@@ -321,7 +321,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>true</code> if operation succeeds, <code>false</code> if not</dd></dl>
 <p>If the operation succeeds, the resulting dynamic array is of the form </p><p class="formulaDsp">
-\[ [a_0, a_1, ..., a_{pos - 1}, src_0, src_1, ..., src_{srcLen}, a_{pos}, a_{pos + 1}, ..., a_{size}] \]
+\[[a_0, a_1, ..., a_{pos - 1}, src_0, src_1, ..., src_{srcLen - 1}, a_{pos}, a_{pos + 1}, ..., a_{size - 1}]\]
 </p>
 <p> , where \(a\) is the previous dynamic array and \(size\) is the size of the previous dynamic array. </p>
 
@@ -376,7 +376,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <p>The resulting dynamic array is of the form </p><p class="formulaDsp">
-\[ [a_0, a_1, ..., a_{from - 1}, a_{to}, a_{to + 1}, a_{size}] \]
+\[[a_0, a_1, ..., a_{from - 1}, a_{to}, a_{to + 1},..., a_{size - 1}]\]
 </p>
 <p> , where \(a\) is the previous dynamic array and \(size\) is the size of the previous dynamic array. </p>
 

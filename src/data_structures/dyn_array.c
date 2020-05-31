@@ -27,18 +27,23 @@ static bool expand(struct ctls_DynArray* dynArr, size_t elemSize)
     return reallocData(dynArr, nearbyint((double)GROWTH_FACTOR * dynArr->capacity), elemSize);
 }
 
-struct ctls_DynArray* ctls_dyn_init(struct ctls_DynArray* dynArr, size_t elemSize)
+struct ctls_DynArray* ctls_dyn_init(struct ctls_DynArray* dynArr, size_t initialCapacity, size_t elemSize)
 {
     if (!dynArr)
         dynArr = malloc(sizeof(struct ctls_DynArray));
     if (dynArr)
     {
-        dynArr->data = malloc(DEFAULT_INITIAL_CAPACITY * elemSize);
+        dynArr->data = malloc(initialCapacity * elemSize);
         if (dynArr->data)
-            dynArr->capacity = DEFAULT_INITIAL_CAPACITY;
+            dynArr->capacity = initialCapacity;
         dynArr->size = 0;
     }
     return dynArr;
+}
+
+struct ctls_DynArray* ctls_dyn_defaultInit(struct ctls_DynArray* dynArr, size_t elemSize)
+{
+    return ctls_dyn_init(dynArr, DEFAULT_INITIAL_CAPACITY, elemSize);
 }
 
 void ctls_dyn_reset(struct ctls_DynArray* dynArr, size_t elemSize)

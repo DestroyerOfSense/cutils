@@ -20,7 +20,7 @@
  * void f(void)
  * {
  *     ctls_DynArray_int arr;
- *     ctls_dyn_init_int(&arr);
+ *     ctls_dyn_defaultInit_int(&arr);
  *     // ...
  * }
  * @endcode
@@ -69,7 +69,7 @@
  * void f(void)
  * {
  *     ctls_DynArray_int arr;
- *     ctls_dyn_init_int(&arr);
+ *     ctls_dyn_defaultInit_int(&arr);
  *     // ...
  * }
  * @endcode
@@ -82,7 +82,9 @@ struct ctls_DynArray##__VA_ARGS__ \
     size_t size, capacity; \
 }; \
 \
-struct ctls_DynArray##__VA_ARGS__* ctls_dyn_init##__VA_ARGS__(struct ctls_DynArray##__VA_ARGS__* dynArr); \
+struct ctls_DynArray##__VA_ARGS__* ctls_dyn_init##__VA_ARGS__(struct ctls_DynArray##__VA_ARGS__* dynArr, \
+    size_t initialCapacity); \
+struct ctls_DynArray##__VA_ARGS__* ctls_dyn_defaultInit##__VA_ARGS__(struct ctls_DynArray##__VA_ARGS__* dynArr); \
 void ctls_dyn_reset##__VA_ARGS__(struct ctls_DynArray##__VA_ARGS__* dynArr); \
 bool ctls_dyn_shrinkToFit##__VA_ARGS__(struct ctls_DynArray##__VA_ARGS__* dynArr); \
 bool ctls_dyn_append##__VA_ARGS__(struct ctls_DynArray##__VA_ARGS__* dynArr, type elem); \
@@ -123,18 +125,24 @@ static bool ctls_dyn_expand##__VA_ARGS__(struct ctls_DynArray##__VA_ARGS__* dynA
     return ctls_dyn_reallocData##__VA_ARGS__(dynArr, nearbyint((double)CTLS_DYN_GROWTH_FACTOR * (dynArr)->capacity)); \
 } \
 \
-struct ctls_DynArray##__VA_ARGS__* ctls_dyn_init##__VA_ARGS__(struct ctls_DynArray##__VA_ARGS__* dynArr) \
+struct ctls_DynArray##__VA_ARGS__* ctls_dyn_init##__VA_ARGS__(struct ctls_DynArray##__VA_ARGS__* dynArr, \
+    size_t initialCapacity) \
 { \
     if (!dynArr) \
         dynArr = malloc(sizeof(struct ctls_DynArray##__VA_ARGS__)); \
     if (dynArr) \
     { \
-        dynArr->data = malloc(CTLS_DYN_DEFAULT_INITIAL_CAPACITY * sizeof(type)); \
+        dynArr->data = malloc(initialCapacity * sizeof(type)); \
         if (dynArr->data) \
-            dynArr->capacity = CTLS_DYN_DEFAULT_INITIAL_CAPACITY; \
+            dynArr->capacity = initialCapacity; \
         dynArr->size = 0; \
     } \
     return dynArr; \
+} \
+\
+struct ctls_DynArray##__VA_ARGS__* ctls_dyn_defaultInit##__VA_ARGS__(struct ctls_DynArray##__VA_ARGS__* dynArr) \
+{ \
+    return ctls_dyn_init##__VA_ARGS__(dynArr, CTLS_DYN_DEFAULT_INITIAL_CAPACITY); \
 } \
 \
 void ctls_dyn_reset##__VA_ARGS__(struct ctls_DynArray##__VA_ARGS__* dynArr) \

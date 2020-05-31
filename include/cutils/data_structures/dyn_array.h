@@ -48,20 +48,35 @@ struct ctls_DynArray
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * @brief Initializes a dynamic array with suitable defaults.
+ * @brief Initializes a dynamic array with a given initial capacity.
  * @param dynArr pointer to an uninitialized dynamic array, or `NULL`
+ * @param initialCapacity `dynArr`'s chosen initial capacity, must be nonzero
  * @param elemSize size of one of `dynArr`'s elements
  * @return If `dynArr` is not null, returns `dynArr`. Otherwise, a dynamically allocated dynamic array is returned, or
  *     `NULL` if this cannot be done.
  *
  * First, if `dynArr` is null, it is assigned a dynamically allocated dynamic array. If this fails, `NULL` is returned.
- * Then, `dynArr->data` is assigned a dynamically allocated memory block of a set default size, or `NULL` if allocation
- * fails. If allocation of the memory block is successful, `dynArr->capacity` is set to the aforementioned default size.
- * Lastly, `dynArr->size` is set to zero, and `dynArr` is returned.
+ * Then, `dynArr->data` is assigned a dynamically allocated memory block just large enough for `initialCapacity`
+ * elements, or `NULL` if allocation fails. If allocation of the memory block is successful, `dynArr->capacity` is set
+ * to `initialCapacity`. Lastly, `dynArr->size` is set to zero, and `dynArr` is returned.
  *
  * This is only a convenience function. A dynamic array can be initialized manually if desired.
  */
-struct ctls_DynArray* ctls_dyn_init(struct ctls_DynArray* dynArr, size_t elemSize);
+struct ctls_DynArray* ctls_dyn_init(struct ctls_DynArray* dynArr, size_t initialCapacity, size_t elemSize);
+
+/**
+ * @brief Initializes a dynamic array with the default initial capacity.
+ * @param dynArr pointer to an uninitialized dynamic array, or `NULL`
+ * @param elemSize size of one of `dynArr`'s elements
+ * @return If `dynArr` is not null, returns `dynArr`. Otherwise, a dynamically allocated dynamic array is returned, or
+ *     `NULL` if this cannot be done.
+ *
+ * If `DEFAULT_INITIAL_CAPACITY` is the default initial capacity, this function is equivalent to
+ * `ctls_dyn_init(dynArr, DEFAULT_INITIAL_CAPACITY, elemSize)`.
+ *
+ * This is only a convenience function. A dynamic array can be initialized manually if desired.
+ */
+struct ctls_DynArray* ctls_dyn_defaultInit(struct ctls_DynArray* dynArr, size_t elemSize);
 
 /**
  * @brief Frees `dynArr->data` and zeroes `dynArr`'s members out.

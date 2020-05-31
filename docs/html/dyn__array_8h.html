@@ -91,9 +91,12 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:adaf93db2739d872694acc0b49533ff6a"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structctls___dyn_array.html">ctls_DynArray</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dyn__array_8h.html#adaf93db2739d872694acc0b49533ff6a">ctls_dyn_init</a> (struct <a class="el" href="structctls___dyn_array.html">ctls_DynArray</a> *dynArr, size_t elemSize)</td></tr>
-<tr class="memdesc:adaf93db2739d872694acc0b49533ff6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a dynamic array with suitable defaults.  <a href="dyn__array_8h.html#adaf93db2739d872694acc0b49533ff6a">More...</a><br /></td></tr>
-<tr class="separator:adaf93db2739d872694acc0b49533ff6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73d7c08ada6f3022f4309ef0cc02ea76"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structctls___dyn_array.html">ctls_DynArray</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dyn__array_8h.html#a73d7c08ada6f3022f4309ef0cc02ea76">ctls_dyn_init</a> (struct <a class="el" href="structctls___dyn_array.html">ctls_DynArray</a> *dynArr, size_t initialCapacity, size_t elemSize)</td></tr>
+<tr class="memdesc:a73d7c08ada6f3022f4309ef0cc02ea76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a dynamic array with a given initial capacity.  <a href="dyn__array_8h.html#a73d7c08ada6f3022f4309ef0cc02ea76">More...</a><br /></td></tr>
+<tr class="separator:a73d7c08ada6f3022f4309ef0cc02ea76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7379d6dc9d67165d2304ce326a84bf0c"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structctls___dyn_array.html">ctls_DynArray</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dyn__array_8h.html#a7379d6dc9d67165d2304ce326a84bf0c">ctls_dyn_defaultInit</a> (struct <a class="el" href="structctls___dyn_array.html">ctls_DynArray</a> *dynArr, size_t elemSize)</td></tr>
+<tr class="memdesc:a7379d6dc9d67165d2304ce326a84bf0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a dynamic array with the default initial capacity.  <a href="dyn__array_8h.html#a7379d6dc9d67165d2304ce326a84bf0c">More...</a><br /></td></tr>
+<tr class="separator:a7379d6dc9d67165d2304ce326a84bf0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30853accf4d18a2a3112ddc870e70149"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dyn__array_8h.html#a30853accf4d18a2a3112ddc870e70149">ctls_dyn_reset</a> (struct <a class="el" href="structctls___dyn_array.html">ctls_DynArray</a> *dynArr, size_t elemSize)</td></tr>
 <tr class="memdesc:a30853accf4d18a2a3112ddc870e70149"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees <code>dynArr-&gt;data</code> and zeroes <code>dynArr</code>'s members out.  <a href="dyn__array_8h.html#a30853accf4d18a2a3112ddc870e70149">More...</a><br /></td></tr>
 <tr class="separator:a30853accf4d18a2a3112ddc870e70149"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -171,6 +174,46 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a7379d6dc9d67165d2304ce326a84bf0c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7379d6dc9d67165d2304ce326a84bf0c">&#9670;&nbsp;</a></span>ctls_dyn_defaultInit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structctls___dyn_array.html">ctls_DynArray</a>* ctls_dyn_defaultInit </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structctls___dyn_array.html">ctls_DynArray</a> *&#160;</td>
+          <td class="paramname"><em>dynArr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>elemSize</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initializes a dynamic array with the default initial capacity. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dynArr</td><td>pointer to an uninitialized dynamic array, or <code>NULL</code> </td></tr>
+    <tr><td class="paramname">elemSize</td><td>size of one of <code>dynArr</code>'s elements </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>If <code>dynArr</code> is not null, returns <code>dynArr</code>. Otherwise, a dynamically allocated dynamic array is returned, or <code>NULL</code> if this cannot be done.</dd></dl>
+<p>If <code>DEFAULT_INITIAL_CAPACITY</code> is the default initial capacity, this function is equivalent to <code>ctls_dyn_init(dynArr, DEFAULT_INITIAL_CAPACITY, elemSize)</code>.</p>
+<p>This is only a convenience function. A dynamic array can be initialized manually if desired. </p>
+
+</div>
+</div>
 <a id="a9ce52f62f41f823174fb268425a630c2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9ce52f62f41f823174fb268425a630c2">&#9670;&nbsp;</a></span>ctls_dyn_extend()</h2>
 
@@ -224,8 +267,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="adaf93db2739d872694acc0b49533ff6a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adaf93db2739d872694acc0b49533ff6a">&#9670;&nbsp;</a></span>ctls_dyn_init()</h2>
+<a id="a73d7c08ada6f3022f4309ef0cc02ea76"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73d7c08ada6f3022f4309ef0cc02ea76">&#9670;&nbsp;</a></span>ctls_dyn_init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -235,6 +278,12 @@ Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype">struct <a class="el" href="structctls___dyn_array.html">ctls_DynArray</a> *&#160;</td>
           <td class="paramname"><em>dynArr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>initialCapacity</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -250,16 +299,17 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Initializes a dynamic array with suitable defaults. </p>
+<p>Initializes a dynamic array with a given initial capacity. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">dynArr</td><td>pointer to an uninitialized dynamic array, or <code>NULL</code> </td></tr>
+    <tr><td class="paramname">initialCapacity</td><td><code>dynArr</code>'s chosen initial capacity, must be nonzero </td></tr>
     <tr><td class="paramname">elemSize</td><td>size of one of <code>dynArr</code>'s elements </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>If <code>dynArr</code> is not null, returns <code>dynArr</code>. Otherwise, a dynamically allocated dynamic array is returned, or <code>NULL</code> if this cannot be done.</dd></dl>
-<p>First, if <code>dynArr</code> is null, it is assigned a dynamically allocated dynamic array. If this fails, <code>NULL</code> is returned. Then, <code>dynArr-&gt;data</code> is assigned a dynamically allocated memory block of a set default size, or <code>NULL</code> if allocation fails. If allocation of the memory block is successful, <code>dynArr-&gt;capacity</code> is set to the aforementioned default size. Lastly, <code>dynArr-&gt;size</code> is set to zero, and <code>dynArr</code> is returned.</p>
+<p>First, if <code>dynArr</code> is null, it is assigned a dynamically allocated dynamic array. If this fails, <code>NULL</code> is returned. Then, <code>dynArr-&gt;data</code> is assigned a dynamically allocated memory block just large enough for <code>initialCapacity</code> elements, or <code>NULL</code> if allocation fails. If allocation of the memory block is successful, <code>dynArr-&gt;capacity</code> is set to <code>initialCapacity</code>. Lastly, <code>dynArr-&gt;size</code> is set to zero, and <code>dynArr</code> is returned.</p>
 <p>This is only a convenience function. A dynamic array can be initialized manually if desired. </p>
 
 </div>

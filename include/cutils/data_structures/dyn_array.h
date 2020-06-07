@@ -104,7 +104,7 @@ bool ctls_dyn_shrinkToFit(struct ctls_DynArray* dynArr, size_t elemSize);
 
 /**
  * @brief Copies the contents of one dynamic array into another.
- * @param dest pointer to the destination dynamic array, must be either initialized, zeroed out, or `NULL`
+ * @param dest pointer to the destination dynamic array; must be either initialized, zeroed out, or `NULL`
  * @param src pointer to the source dynamic array
  * @param elemSize the size of one of `src`'s elements
  * @return On success, returns a pointer to a dynamic array that contains copies of `src`'s elements. This pointer

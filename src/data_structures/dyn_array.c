@@ -29,14 +29,20 @@ static bool expand(struct ctls_DynArray* dynArr, size_t elemSize)
 
 struct ctls_DynArray* ctls_dyn_init(struct ctls_DynArray* dynArr, size_t initialCapacity, size_t elemSize)
 {
-    if (!dynArr)
+    bool dynArrOriginallyNull = !dynArr;
+    if (dynArrOriginallyNull)
         dynArr = malloc(sizeof(struct ctls_DynArray));
     if (dynArr)
     {
-        dynArr->data = malloc(initialCapacity * elemSize);
-        if (dynArr->data)
-            dynArr->capacity = initialCapacity;
-        dynArr->size = 0;
+        void* newData = malloc(initialCapacity * elemSize);
+        if (newData)
+            *dynArr = (struct ctls_DynArray){newData, 0, initialCapacity};
+        else
+        {
+            if (dynArrOriginallyNull)
+                free(dynArr);
+            dynArr = NULL;
+        }
     }
     return dynArr;
 }
@@ -55,6 +61,23 @@ void ctls_dyn_reset(struct ctls_DynArray* dynArr, size_t elemSize)
 bool ctls_dyn_shrinkToFit(struct ctls_DynArray* dynArr, size_t elemSize)
 {
     return !dynArr->size || reallocData(dynArr, dynArr->size, elemSize);
+}
+
+struct ctls_DynArray* ctls_dyn_copy(struct ctls_DynArray* restrict dest, const struct ctls_DynArray* restrict src,
+    size_t elemSize)
+{
+    bool destOriginallyNull = !dest;
+    if (!dest || !dest->data)
+    {
+        dest = ctls_dyn_init(dest, src->capacity, elemSize);
+        if (!dest)
+            return NULL;
+    }
+    else if (!reallocData(dest, src->capacity, elemSize))
+        return NULL;
+    memcpy(dest->data, src->data, src->size * elemSize);
+    dest->capacity = src->capacity, dest->size = src->size;
+    return dest;
 }
 
 bool ctls_dyn_append(struct ctls_DynArray* restrict dynArr, const void* restrict elem, size_t elemSize)

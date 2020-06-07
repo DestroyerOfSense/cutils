@@ -103,6 +103,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a2f747b46c10f7cf93705e29f3dc4fd61"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dyn__array_8h.html#a2f747b46c10f7cf93705e29f3dc4fd61">ctls_dyn_shrinkToFit</a> (struct <a class="el" href="structctls___dyn_array.html">ctls_DynArray</a> *dynArr, size_t elemSize)</td></tr>
 <tr class="memdesc:a2f747b46c10f7cf93705e29f3dc4fd61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees excess memory held by a dynamic array.  <a href="dyn__array_8h.html#a2f747b46c10f7cf93705e29f3dc4fd61">More...</a><br /></td></tr>
 <tr class="separator:a2f747b46c10f7cf93705e29f3dc4fd61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af43a4f580379e97d29c180b878dcfcb2"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structctls___dyn_array.html">ctls_DynArray</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dyn__array_8h.html#af43a4f580379e97d29c180b878dcfcb2">ctls_dyn_copy</a> (struct <a class="el" href="structctls___dyn_array.html">ctls_DynArray</a> *restrict dest, const struct <a class="el" href="structctls___dyn_array.html">ctls_DynArray</a> *restrict src, size_t elemSize)</td></tr>
+<tr class="memdesc:af43a4f580379e97d29c180b878dcfcb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies the contents of one dynamic array into another.  <a href="dyn__array_8h.html#af43a4f580379e97d29c180b878dcfcb2">More...</a><br /></td></tr>
+<tr class="separator:af43a4f580379e97d29c180b878dcfcb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2bf7d44882e4912718c4bb9f28d31eaa"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dyn__array_8h.html#a2bf7d44882e4912718c4bb9f28d31eaa">ctls_dyn_append</a> (struct <a class="el" href="structctls___dyn_array.html">ctls_DynArray</a> *restrict dynArr, const void *restrict elem, size_t elemSize)</td></tr>
 <tr class="memdesc:a2bf7d44882e4912718c4bb9f28d31eaa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds an element to the end of a dynamic array.  <a href="dyn__array_8h.html#a2bf7d44882e4912718c4bb9f28d31eaa">More...</a><br /></td></tr>
 <tr class="separator:a2bf7d44882e4912718c4bb9f28d31eaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -121,12 +124,18 @@ Functions</h2></td></tr>
 <p>Any given dynamic array <code>dynArr</code> should be treated as if there was a constant associated with it of type <code>size_t</code> and value <em>S</em>, the size of one of its elements. Many functions declared in this file have a final parameter called <code>elemSize</code>, of type <code>size_t</code>. For every call to one of these functions that acts on <code>dynArr</code>, <code>elemSize</code> should be set to <em>S</em>. In short, the size of an element of a given dynamic array should be treated as if it was constant.</p>
 <p>The following invariants should be adhered to:</p><ul>
 <li><code><a class="el" href="structctls___dyn_array.html#a1b541e1be99a01973f5e78ad5da59028" title="the block of memory that contains this dynamic array&#39;s elements">ctls_DynArray::data</a></code> must be either <code>NULL</code> or dynamically allocated.</li>
-<li><code><a class="el" href="structctls___dyn_array.html#a0604a3b07abf1aa3709ee4d81794b5e6" title="number of elements contained in this dynamic array">ctls_DynArray::size</a></code> must never be greater than <code><a class="el" href="structctls___dyn_array.html#a79c690a71b859c94f0c0eae3a77bf7d4" title="maximum number of elements that can be contained in this dynamic array until it must be expanded">ctls_DynArray::capacity</a></code>.</li>
-<li>The block of memory that <code><a class="el" href="structctls___dyn_array.html#a1b541e1be99a01973f5e78ad5da59028" title="the block of memory that contains this dynamic array&#39;s elements">ctls_DynArray::data</a></code> points to should be exactly <code><a class="el" href="structctls___dyn_array.html#a79c690a71b859c94f0c0eae3a77bf7d4" title="maximum number of elements that can be contained in this dynamic array until it must be expanded">ctls_DynArray::capacity</a> * S</code> bytes wide.</li>
+<li>If <code><a class="el" href="structctls___dyn_array.html#a1b541e1be99a01973f5e78ad5da59028" title="the block of memory that contains this dynamic array&#39;s elements">ctls_DynArray::data</a> != NULL</code>:<ul>
+<li><code><a class="el" href="structctls___dyn_array.html#a79c690a71b859c94f0c0eae3a77bf7d4" title="maximum number of elements that can be contained in this dynamic array until it must be expanded">ctls_DynArray::capacity</a></code> must not be zero.</li>
+<li><code><a class="el" href="structctls___dyn_array.html#a0604a3b07abf1aa3709ee4d81794b5e6" title="number of elements contained in this dynamic array">ctls_DynArray::size</a></code> must not be greater than <code><a class="el" href="structctls___dyn_array.html#a79c690a71b859c94f0c0eae3a77bf7d4" title="maximum number of elements that can be contained in this dynamic array until it must be expanded">ctls_DynArray::capacity</a></code>.</li>
+<li>The block of memory that <code><a class="el" href="structctls___dyn_array.html#a1b541e1be99a01973f5e78ad5da59028" title="the block of memory that contains this dynamic array&#39;s elements">ctls_DynArray::data</a></code> points to must be exactly <code><a class="el" href="structctls___dyn_array.html#a79c690a71b859c94f0c0eae3a77bf7d4" title="maximum number of elements that can be contained in this dynamic array until it must be expanded">ctls_DynArray::capacity</a> * S</code> bytes wide.</li>
+<li><code><a class="el" href="structctls___dyn_array.html#a1b541e1be99a01973f5e78ad5da59028" title="the block of memory that contains this dynamic array&#39;s elements">ctls_DynArray::data</a></code> must point to the first element of <code>dynArr</code>, and <code>dynArr</code>'s elements must be contiguous.</li>
+</ul>
+</li>
 </ul>
 <p>As long as these invariants are adhered to, the user should feel free to modify a dynamic array's fields directly if he has good reason to. For example, this file does not contain a <code>pop</code> function, but the same effect can be achieved by simply decrementing <code><a class="el" href="structctls___dyn_array.html#a0604a3b07abf1aa3709ee4d81794b5e6" title="number of elements contained in this dynamic array">ctls_DynArray::size</a></code>.</p>
+<p>A dynamic array's elements can be accessed via <code><a class="el" href="structctls___dyn_array.html#a1b541e1be99a01973f5e78ad5da59028" title="the block of memory that contains this dynamic array&#39;s elements">ctls_DynArray::data</a></code>.</p>
 <p>Though a given dynamic array's elements are often all of the same type, there is no reason why they cannot be of different types, as long as each type has the same size.</p>
-<p><code>FE_INEXACT</code> may be raised during a call to <code><a class="el" href="dyn__array_8h.html#a2bf7d44882e4912718c4bb9f28d31eaa" title="Adds an element to the end of a dynamic array.">ctls_dyn_append()</a></code>, <code><a class="el" href="dyn__array_8h.html#a0e92b33fa6225cc94d301f06dd3b3d9d" title="Inserts the elements of src before dynArr-&gt;data + pos.">ctls_dyn_insert()</a></code>, or <code><a class="el" href="dyn__array_8h.html#a9ce52f62f41f823174fb268425a630c2" title="Inserts the elements of src at the end of a dynamic array.">ctls_dyn_extend()</a></code> when it would make <code><a class="el" href="structctls___dyn_array.html#a79c690a71b859c94f0c0eae3a77bf7d4" title="maximum number of elements that can be contained in this dynamic array until it must be expanded">ctls_DynArray::capacity</a></code> extremely large, or on systems where the difference in precision between <code>float</code> and <code>double</code> is abnormally small. </p>
+<p><code>FE_INEXACT</code> may be raised during a call to <code><a class="el" href="dyn__array_8h.html#a2bf7d44882e4912718c4bb9f28d31eaa" title="Adds an element to the end of a dynamic array.">ctls_dyn_append()</a></code>, <code><a class="el" href="dyn__array_8h.html#a0e92b33fa6225cc94d301f06dd3b3d9d" title="Inserts the elements of src before dynArr-&gt;data + pos.">ctls_dyn_insert()</a></code>, <code><a class="el" href="dyn__array_8h.html#a9ce52f62f41f823174fb268425a630c2" title="Inserts the elements of src at the end of a dynamic array.">ctls_dyn_extend()</a></code>, or when it would make <code><a class="el" href="structctls___dyn_array.html#a79c690a71b859c94f0c0eae3a77bf7d4" title="maximum number of elements that can be contained in this dynamic array until it must be expanded">ctls_DynArray::capacity</a></code> extremely large, or on systems where the difference in precision between <code>float</code> and <code>double</code> is abnormally small. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="a2bf7d44882e4912718c4bb9f28d31eaa"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2bf7d44882e4912718c4bb9f28d31eaa">&#9670;&nbsp;</a></span>ctls_dyn_append()</h2>
@@ -174,6 +183,53 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="af43a4f580379e97d29c180b878dcfcb2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af43a4f580379e97d29c180b878dcfcb2">&#9670;&nbsp;</a></span>ctls_dyn_copy()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structctls___dyn_array.html">ctls_DynArray</a>* ctls_dyn_copy </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structctls___dyn_array.html">ctls_DynArray</a> *restrict&#160;</td>
+          <td class="paramname"><em>dest</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structctls___dyn_array.html">ctls_DynArray</a> *restrict&#160;</td>
+          <td class="paramname"><em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>elemSize</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Copies the contents of one dynamic array into another. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dest</td><td>pointer to the destination dynamic array, must be either initialized, zeroed out, or <code>NULL</code> </td></tr>
+    <tr><td class="paramname">src</td><td>pointer to the source dynamic array </td></tr>
+    <tr><td class="paramname">elemSize</td><td>the size of one of <code>src</code>'s elements </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>On success, returns a pointer to a dynamic array that contains copies of <code>src</code>'s elements. This pointer equals <code>dest</code> if <code>dest</code> was not <code>NULL</code>. Otherwise, it points to a dynamically allocated dynamic array. On failure, returns <code>NULL</code>.</dd></dl>
+<p>If the operation succeeds, the dynamic array accessible via the returned pointer has the same size, capacity, and element size as <code>src</code>.</p>
+<p>This is only a convenience function. Making a copy of a dynamic array can be performed manually, if desired. This should be done if, for instance, <code>src</code>'s elements are aggregates and must be deep copied. </p>
+
+</div>
+</div>
 <a id="a7379d6dc9d67165d2304ce326a84bf0c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7379d6dc9d67165d2304ce326a84bf0c">&#9670;&nbsp;</a></span>ctls_dyn_defaultInit()</h2>
 
@@ -208,7 +264,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>If <code>dynArr</code> is not null, returns <code>dynArr</code>. Otherwise, a dynamically allocated dynamic array is returned, or <code>NULL</code> if this cannot be done.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>On success, returns a dynamically allocated dynamic array if <code>dynArr</code> was originally <code>NULL</code>, <code>dynArr</code> otherwise. On failure, returns <code>NULL</code>.</dd></dl>
 <p>If <code>DEFAULT_INITIAL_CAPACITY</code> is the default initial capacity, this function is equivalent to <code>ctls_dyn_init(dynArr, DEFAULT_INITIAL_CAPACITY, elemSize)</code>.</p>
 <p>This is only a convenience function. A dynamic array can be initialized manually if desired. </p>
 
@@ -308,8 +364,8 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>If <code>dynArr</code> is not null, returns <code>dynArr</code>. Otherwise, a dynamically allocated dynamic array is returned, or <code>NULL</code> if this cannot be done.</dd></dl>
-<p>First, if <code>dynArr</code> is null, it is assigned a dynamically allocated dynamic array. If this fails, <code>NULL</code> is returned. Then, <code>dynArr-&gt;data</code> is assigned a dynamically allocated memory block just large enough for <code>initialCapacity</code> elements, or <code>NULL</code> if allocation fails. If allocation of the memory block is successful, <code>dynArr-&gt;capacity</code> is set to <code>initialCapacity</code>. Lastly, <code>dynArr-&gt;size</code> is set to zero, and <code>dynArr</code> is returned.</p>
+<dl class="section return"><dt>Returns</dt><dd>On success, returns a dynamically allocated dynamic array if <code>dynArr</code> was originally <code>NULL</code>, <code>dynArr</code> otherwise. On failure, returns <code>NULL</code>.</dd></dl>
+<p>First, if <code>dynArr</code> is null, it is assigned a dynamically allocated dynamic array. Then, <code>dynArr-&gt;data</code> is assigned a dynamically allocated memory block just large enough for <code>initialCapacity</code> elements. If all allocations were successful, <code>dynArr-&gt;capacity</code> is set to <code>initialCapacity</code>, <code>dynArr-&gt;size</code> is set to zero, and <code>dynArr</code> is returned. Otherwise, <code>dynArr</code> is freed if it was dynamically allocated within the function, and <code>NULL</code> is returned.</p>
 <p>This is only a convenience function. A dynamic array can be initialized manually if desired. </p>
 
 </div>

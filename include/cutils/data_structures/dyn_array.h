@@ -11,18 +11,23 @@
  *
  * The following invariants should be adhered to:
  * - `ctls_DynArray::data` must be either `NULL` or dynamically allocated.
- * - `ctls_DynArray::size` must never be greater than `ctls_DynArray::capacity`.
- * - The block of memory that `ctls_DynArray::data` points to should be exactly `ctls_DynArray::capacity * S` bytes
- *     wide.
+ * - If `ctls_DynArray::data != NULL`:
+ *     - `ctls_DynArray::capacity` must not be zero.
+ *     - `ctls_DynArray::size` must not be greater than `ctls_DynArray::capacity`.
+ *     - The block of memory that `ctls_DynArray::data` points to must be exactly `ctls_DynArray::capacity * S` bytes
+ *         wide.
+ *     - `ctls_DynArray::data` must point to the first element of `dynArr`, and `dynArr`'s elements must be contiguous.
  *
  * As long as these invariants are adhered to, the user should feel free to modify a dynamic array's fields directly if
  * he has good reason to. For example, this file does not contain a `pop` function, but the same effect can be achieved
  * by simply decrementing `ctls_DynArray::size`.
  *
+ * A dynamic array's elements can be accessed via `ctls_DynArray::data`.
+ *
  * Though a given dynamic array's elements are often all of the same type, there is no reason why they cannot be of
  * different types, as long as each type has the same size.
  *
- * `FE_INEXACT` may be raised during a call to `ctls_dyn_append()`, `ctls_dyn_insert()`, or `ctls_dyn_extend()` when it
+ * `FE_INEXACT` may be raised during a call to `ctls_dyn_append()`, `ctls_dyn_insert()`, `ctls_dyn_extend()`, or when it
  * would make `ctls_DynArray::capacity` extremely large, or on systems where the difference in precision between `float`
  * and `double` is abnormally small.
  */
@@ -52,13 +57,13 @@ struct ctls_DynArray
  * @param dynArr pointer to an uninitialized dynamic array, or `NULL`
  * @param initialCapacity `dynArr`'s chosen initial capacity, must be nonzero
  * @param elemSize size of one of `dynArr`'s elements
- * @return If `dynArr` is not null, returns `dynArr`. Otherwise, a dynamically allocated dynamic array is returned, or
- *     `NULL` if this cannot be done.
+ * @return On success, returns a dynamically allocated dynamic array if `dynArr` was originally `NULL`, `dynArr`
+ *     otherwise. On failure, returns `NULL`.
  *
- * First, if `dynArr` is null, it is assigned a dynamically allocated dynamic array. If this fails, `NULL` is returned.
- * Then, `dynArr->data` is assigned a dynamically allocated memory block just large enough for `initialCapacity`
- * elements, or `NULL` if allocation fails. If allocation of the memory block is successful, `dynArr->capacity` is set
- * to `initialCapacity`. Lastly, `dynArr->size` is set to zero, and `dynArr` is returned.
+ * First, if `dynArr` is null, it is assigned a dynamically allocated dynamic array. Then, `dynArr->data` is assigned a
+ * dynamically allocated memory block just large enough for `initialCapacity` elements. If all allocations were
+ * successful, `dynArr->capacity` is set to `initialCapacity`, `dynArr->size` is set to zero, and `dynArr` is returned.
+ * Otherwise, `dynArr` is freed if it was dynamically allocated within the function, and `NULL` is returned.
  *
  * This is only a convenience function. A dynamic array can be initialized manually if desired.
  */
@@ -68,8 +73,8 @@ struct ctls_DynArray* ctls_dyn_init(struct ctls_DynArray* dynArr, size_t initial
  * @brief Initializes a dynamic array with the default initial capacity.
  * @param dynArr pointer to an uninitialized dynamic array, or `NULL`
  * @param elemSize size of one of `dynArr`'s elements
- * @return If `dynArr` is not null, returns `dynArr`. Otherwise, a dynamically allocated dynamic array is returned, or
- *     `NULL` if this cannot be done.
+ * @return On success, returns a dynamically allocated dynamic array if `dynArr` was originally `NULL`, `dynArr`
+ *     otherwise. On failure, returns `NULL`.
  *
  * If `DEFAULT_INITIAL_CAPACITY` is the default initial capacity, this function is equivalent to
  * `ctls_dyn_init(dynArr, DEFAULT_INITIAL_CAPACITY, elemSize)`.
@@ -96,6 +101,24 @@ void ctls_dyn_reset(struct ctls_DynArray* dynArr, size_t elemSize);
  * If the operation succeeds, `dynArr->capacity` is equal to `dynArr->size`.
  */
 bool ctls_dyn_shrinkToFit(struct ctls_DynArray* dynArr, size_t elemSize);
+
+/**
+ * @brief Copies the contents of one dynamic array into another.
+ * @param dest pointer to the destination dynamic array, must be either initialized, zeroed out, or `NULL`
+ * @param src pointer to the source dynamic array
+ * @param elemSize the size of one of `src`'s elements
+ * @return On success, returns a pointer to a dynamic array that contains copies of `src`'s elements. This pointer
+ *     equals `dest` if `dest` was not `NULL`. Otherwise, it points to a dynamically allocated dynamic array. On
+ *     failure, returns `NULL`.
+ *
+ * If the operation succeeds, the dynamic array accessible via the returned pointer has the same size, capacity, and
+ * element size as `src`.
+ *
+ * This is only a convenience function. Making a copy of a dynamic array can be performed manually, if desired. This
+ * should be done if, for instance, `src`'s elements are aggregates and must be deep copied.
+ */
+struct ctls_DynArray* ctls_dyn_copy(struct ctls_DynArray* restrict dest, const struct ctls_DynArray* restrict src,
+    size_t elemSize);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Mutators

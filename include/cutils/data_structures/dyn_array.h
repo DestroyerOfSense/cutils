@@ -27,9 +27,7 @@
  * Though a given dynamic array's elements are often all of the same type, there is no reason why they cannot be of
  * different types, as long as each type has the same size.
  *
- * `FE_INEXACT` may be raised during a call to `ctls_dyn_append()`, `ctls_dyn_insert()`, `ctls_dyn_extend()`, or when it
- * would make `ctls_DynArray::capacity` extremely large, or on systems where the difference in precision between `float`
- * and `double` is abnormally small.
+ * `FE_INEXACT` may be raised during a call to `ctls_dyn_append()`, `ctls_dyn_insert()`, or `ctls_dyn_extend()`.
  */
 
 /// @cond

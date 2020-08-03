@@ -48,7 +48,7 @@
 
 #include "cutils/math/constants.h"
 
-#define CTLS_DYN_GROWTH_FACTOR (float)CTLS_PHI
+#define CTLS_DYN_GROWTH_FACTOR CTLS_PHI
 #define CTLS_DYN_DEFAULT_INITIAL_CAPACITY 8
 
 /**
@@ -115,11 +115,6 @@ static bool ctls_dyn_reallocData_##suffix(struct ctls_DynArray_##suffix* dynArr,
     return newData; \
 } \
 \
-static bool ctls_dyn_expand_##suffix(struct ctls_DynArray_##suffix* dynArr) \
-{ \
-    return ctls_dyn_reallocData_##suffix(dynArr, nearbyint((double)CTLS_DYN_GROWTH_FACTOR * (dynArr)->capacity)); \
-} \
-\
 struct ctls_DynArray_##suffix* ctls_dyn_init_##suffix(struct ctls_DynArray_##suffix* dynArr, \
     size_t initialCapacity) \
 { \
@@ -176,23 +171,27 @@ struct ctls_DynArray_##suffix* ctls_dyn_copy_##suffix(struct ctls_DynArray_##suf
 \
 bool ctls_dyn_append_##suffix(struct ctls_DynArray_##suffix* dynArr, type elem) \
 { \
-    if (dynArr->size < dynArr->capacity || ctls_dyn_expand_##suffix(dynArr)) \
+    if (dynArr->size == dynArr->capacity) \
     { \
-        dynArr->data[dynArr->size++] = elem; \
-        return true; \
+        size_t newCapacity = round(CTLS_DYN_GROWTH_FACTOR * dynArr->capacity); \
+        if (newCapacity < dynArr->capacity || !ctls_dyn_reallocData_##suffix(dynArr, newCapacity)) \
+            return false; \
     } \
-    else \
-        return false; \
+    dynArr->data[dynArr->size++] = elem; \
+    return true; \
 } \
 \
 bool ctls_dyn_insert_##suffix(struct ctls_DynArray_##suffix* dynArr, type const* src, size_t pos, \
     size_t srcLen) \
 { \
-    while (dynArr->capacity < dynArr->size + srcLen) \
+    size_t n = dynArr->capacity; \
+    for (; n < dynArr->size + srcLen; n = round(CTLS_DYN_GROWTH_FACTOR * n)) \
     { \
-        if (!ctls_dyn_expand_##suffix(dynArr)) \
+        if (n < dynArr->capacity) \
             return false; \
     } \
+    if (!ctls_dyn_reallocData_##suffix(dynArr, n)) \
+        return false; \
     memmove(dynArr->data + pos + srcLen, dynArr->data + pos, (dynArr->size - pos) * sizeof(type)); \
     memmove(dynArr->data + pos, src, srcLen * sizeof(type)); \
     dynArr->size += srcLen; \

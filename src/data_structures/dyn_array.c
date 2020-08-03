@@ -10,7 +10,7 @@
 // By one measure, the golden ratio is the optimal growth factor. It allows reuse of a memory block after only two
 // reallocations, the theoretical minimum. Of course, whether memory blocks are reused in this way depends on the amount
 // of contiguous memory available, and how memory allocation is implemented.
-#define GROWTH_FACTOR ((float)CTLS_PHI)
+#define GROWTH_FACTOR CTLS_PHI
 #define DEFAULT_INITIAL_CAPACITY 8
 
 static bool reallocData(struct ctls_DynArray* dynArr, size_t newCapacity, size_t elemSize)
@@ -19,12 +19,6 @@ static bool reallocData(struct ctls_DynArray* dynArr, size_t newCapacity, size_t
     if (newData)
         dynArr->data = newData, dynArr->capacity = newCapacity;
     return newData;
-}
-
-static bool expand(struct ctls_DynArray* dynArr, size_t elemSize)
-{
-    // This line is responsible for the possible raising of `FE_INEXACT` mentioned in the header.
-    return reallocData(dynArr, nearbyint((double)GROWTH_FACTOR * dynArr->capacity), elemSize);
 }
 
 struct ctls_DynArray* ctls_dyn_init(struct ctls_DynArray* dynArr, size_t initialCapacity, size_t elemSize)
@@ -82,23 +76,27 @@ struct ctls_DynArray* ctls_dyn_copy(struct ctls_DynArray* restrict dest, const s
 
 bool ctls_dyn_append(struct ctls_DynArray* restrict dynArr, const void* restrict elem, size_t elemSize)
 {
-    if (dynArr->size < dynArr->capacity || expand(dynArr, elemSize))
+    if (dynArr->size == dynArr->capacity)
     {
-        memcpy((char*)dynArr->data + elemSize * dynArr->size, elem, elemSize);
-        ++dynArr->size;
-        return true;
+        size_t newCapacity = round(GROWTH_FACTOR * dynArr->capacity);
+        if (newCapacity < dynArr->capacity || !reallocData(dynArr, newCapacity, elemSize))
+            return false;
     }
-    else
-        return false;
+    memcpy((char*)dynArr->data + elemSize * dynArr->size, elem, elemSize);
+    ++dynArr->size;
+    return true;
 }
 
 bool ctls_dyn_insert(struct ctls_DynArray* dynArr, const void* src, size_t pos, size_t srcLen, size_t elemSize)
 {
-    while (dynArr->capacity < dynArr->size + srcLen)
+    size_t n = dynArr->capacity;
+    for (; n < dynArr->size + srcLen; n = round(GROWTH_FACTOR * n))
     {
-        if (!expand(dynArr, elemSize))
+        if (n < dynArr->capacity)
             return false;
     }
+    if (!reallocData(dynArr, n, elemSize))
+        return false;
     char* data = dynArr->data;
     size_t scaledPos = pos * elemSize, scaledSrcLen = srcLen * elemSize;
     memmove(data + scaledPos + scaledSrcLen, data + scaledPos, dynArr->size * elemSize - scaledPos);

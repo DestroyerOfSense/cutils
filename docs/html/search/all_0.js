@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['capacity_0',['capacity',['../structctls___dyn_array.html#a79c690a71b859c94f0c0eae3a77bf7d4',1,'ctls_DynArray']]],
+  ['capacity_0',['capacity',['../structctls__DynArray.html#a79c690a71b859c94f0c0eae3a77bf7d4',1,'ctls_DynArray']]],
   ['constants_2eh_1',['constants.h',['../constants_8h.html',1,'']]],
   ['ctls_5fdyn_5fappend_2',['ctls_dyn_append',['../dyn__array_8h.html#a2bf7d44882e4912718c4bb9f28d31eaa',1,'dyn_array.h']]],
   ['ctls_5fdyn_5farray_3',['CTLS_DYN_ARRAY',['../dyn__array__g_8h.html#a7ad1ba517ffeb81c2bd8ce55a34dcb87',1,'dyn_array_g.h']]],
@@ -14,7 +14,7 @@ var searchData=
   ['ctls_5fdyn_5fremove_11',['ctls_dyn_remove',['../dyn__array_8h.html#a8f2aa64dff2908023502d7f083e4e3da',1,'dyn_array.h']]],
   ['ctls_5fdyn_5freset_12',['ctls_dyn_reset',['../dyn__array_8h.html#a30853accf4d18a2a3112ddc870e70149',1,'dyn_array.h']]],
   ['ctls_5fdyn_5fshrinktofit_13',['ctls_dyn_shrinkToFit',['../dyn__array_8h.html#a2f747b46c10f7cf93705e29f3dc4fd61',1,'dyn_array.h']]],
-  ['ctls_5fdynarray_14',['ctls_DynArray',['../structctls___dyn_array.html',1,'']]],
+  ['ctls_5fdynarray_14',['ctls_DynArray',['../structctls__DynArray.html',1,'']]],
   ['ctls_5fe_15',['CTLS_E',['../constants_8h.html#a0b4c164124c9d0b6017e7e56aa043121',1,'constants.h']]],
   ['ctls_5flog10_16',['CTLS_LOG10',['../constants_8h.html#a6ec73ad9a514ccac8935a4183bfd714a',1,'constants.h']]],
   ['ctls_5flog2_17',['CTLS_LOG2',['../constants_8h.html#abd894f5ef8ffef1f5b5312efb1fdef6a',1,'constants.h']]],

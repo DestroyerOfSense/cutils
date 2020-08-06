@@ -38,13 +38,11 @@
  * external linkage if the corresponding functions and objects are declared in cutils/data_structures/dyn_array.h.
  */
 
-/// @cond
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 #include <math.h>
-/// @endcond
 
 #include "cutils/math/constants.h"
 

@@ -30,10 +30,8 @@
  * `FE_INEXACT` may be raised during a call to `ctls_dyn_append()`, `ctls_dyn_insert()`, or `ctls_dyn_extend()`.
  */
 
-/// @cond
 #include <stddef.h>
 #include <stdbool.h>
-/// @endcond
 
 /** @brief A dynamic array. */
 struct ctls_DynArray
